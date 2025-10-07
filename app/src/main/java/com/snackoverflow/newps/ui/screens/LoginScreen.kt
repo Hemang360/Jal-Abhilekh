@@ -24,7 +24,6 @@ fun LoginPage() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var selectedRole by remember { mutableStateOf(roles[0]) }
-    var offlineMode by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
 
     // Gradient background
@@ -106,48 +105,16 @@ fun LoginPage() {
                 }
             }
 
-            // Offline Mode Toggle
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+            // Sign In Button
+            Button(
+                onClick = { /* TODO: Handle Sign In */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
             ) {
-                Switch(
-                    checked = offlineMode,
-                    onCheckedChange = { offlineMode = it },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color(0xFF1565C0),
-                        uncheckedThumbColor = Color.LightGray
-                    )
-                )
-                Text(
-                    text = "Offline Mode",
-                    modifier = Modifier.padding(start = 8.dp),
-                    color = Color.DarkGray
-                )
-            }
-
-            // Buttons
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Button(
-                    onClick = { /* TODO: Handle Sign In */ },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
-                ) {
-                    Text("Sign In", color = Color.White, fontSize = 16.sp)
-                }
-
-                OutlinedButton(
-                    onClick = { /* TODO: Handle Biometric */ },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1565C0))
-                ) {
-                    Text("Verify (Fingerprint / Face)", fontSize = 16.sp)
-                }
+                Text("Sign In", color = Color.White, fontSize = 16.sp)
             }
         }
     }
@@ -158,3 +125,4 @@ fun LoginPage() {
 fun LoginPreview() {
     LoginPage()
 }
+s

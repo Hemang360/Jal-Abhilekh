@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun ManualReadingEntryScreenUI() {
     var waterLevel by remember { mutableStateOf("") }
-    var siteId by remember { mutableStateOf("S1 - River Station 1") }
+    var siteName by remember { mutableStateOf("") }
     val timestamp = "12:34 PM"
     val gpsLocation = "28.6139, 77.209"
 
@@ -43,6 +43,17 @@ fun ManualReadingEntryScreenUI() {
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
+
+                OutlinedTextField(
+                    value = siteName,
+                    onValueChange = { siteName = it },
+                    label = { Text("Site") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 OutlinedTextField(
                     value = waterLevel,
                     onValueChange = { waterLevel = it },
@@ -53,8 +64,11 @@ fun ManualReadingEntryScreenUI() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Column(modifier = Modifier.background(Color(0xFFF1F8E9), shape = RoundedCornerShape(8.dp)).padding(12.dp)) {
-                    Text(text = "Site: $siteId", fontSize = 16.sp, color = Color.Black)
+                Column(
+                    modifier = Modifier
+                        .background(Color(0xFFF1F8E9), shape = RoundedCornerShape(8.dp))
+                        .padding(12.dp)
+                ) {
                     Text(text = "Timestamp: $timestamp", fontSize = 16.sp, color = Color.Black)
                     Text(text = "GPS: $gpsLocation", fontSize = 16.sp, color = Color.Black)
                 }
@@ -64,9 +78,14 @@ fun ManualReadingEntryScreenUI() {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Photo & Map Cards
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             Card(
-                modifier = Modifier.weight(1f).height(150.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(150.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.Gray),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
@@ -77,7 +96,9 @@ fun ManualReadingEntryScreenUI() {
             }
 
             Card(
-                modifier = Modifier.weight(1f).height(150.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(150.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.LightGray),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
@@ -90,19 +111,11 @@ fun ManualReadingEntryScreenUI() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Audio Note Button
-        Button(
-            onClick = { /* TODO: Record audio note */ },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text("Attach Audio Note", fontSize = 16.sp)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Action Buttons
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             Button(
                 onClick = { /* TODO: Submit */ },
                 modifier = Modifier.weight(1f),
@@ -115,13 +128,6 @@ fun ManualReadingEntryScreenUI() {
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107))
             ) { Text("Retake") }
-
-            Button(
-                onClick = { /* TODO: Save Offline */ },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9E9E9E))
-            ) { Text("Save Offline") }
         }
     }
 }
