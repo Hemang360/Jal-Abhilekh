@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 data class OfflineReading(
     val siteName: String,
     val timestamp: String,
+    val waterLevel: String,
     var status: String // "Pending", "Synced"
 )
 
@@ -28,9 +29,9 @@ fun OfflineQueueScreenEnhanced() {
     var readings by remember {
         mutableStateOf(
             listOf(
-                OfflineReading("River Station 1", "12:34 PM", "Pending"),
-                OfflineReading("River Station 2", "12:40 PM", "Pending"),
-                OfflineReading("River Station 3", "12:50 PM", "Pending")
+                OfflineReading("Tehri Dam Station 1", "12:34 PM", "97.3%", "Pending"),
+                OfflineReading("Hirakund Dam Station 2", "12:40 PM", "98.1%", "Pending"),
+                OfflineReading("Tehri Dam Station 3", "12:50 PM", "97.4%", "Pending")
             )
         )
     }
@@ -38,22 +39,31 @@ fun OfflineQueueScreenEnhanced() {
     var isSyncing by remember { mutableStateOf(false) }
     var showConfetti by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFFE3F2FF))
-    ) {
-        Column(modifier = Modifier
+    // Colors
+    val lightBg = Color(0xFFdbf4ff)
+    val cardBg = Color(0xFFd8efff)
+    val primaryBlue = Color(0xFF25a4ff)
+    val darkBlue = Color(0xFF0070c0)
+    val pendingColor = Color(0xFFFFA000)
+    val syncedColor = Color(0xFF2E7D32)
+
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(lightBg)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
             Text(
                 text = "Offline Queue",
-                fontSize = 24.sp,
-                color = Color(0xFF1565C0)
+                fontSize = 26.sp,
+                color = darkBlue,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
-            // Background worker indicator
             val pendingCount = readings.count { it.status == "Pending" }
             if (isSyncing) {
                 Text(
@@ -67,7 +77,7 @@ fun OfflineQueueScreenEnhanced() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp),
-                    color = Color(0xFF1565C0),
+                    color = primaryBlue,
                     trackColor = Color.LightGray
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -80,8 +90,8 @@ fun OfflineQueueScreenEnhanced() {
                 items(readings) { reading ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.95f)),
-                        shape = RoundedCornerShape(8.dp)
+                        colors = CardDefaults.cardColors(containerColor = cardBg),
+                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
@@ -90,36 +100,46 @@ fun OfflineQueueScreenEnhanced() {
                             Box(
                                 modifier = Modifier
                                     .size(50.dp)
-                                    .background(Color.Gray, shape = RoundedCornerShape(4.dp)),
+                                    .background(primaryBlue, shape = RoundedCornerShape(8.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("Img", color = Color.White)
+                                Text("📷", color = Color.White)
                             }
 
                             Spacer(modifier = Modifier.width(12.dp))
 
-                            Column {
-                                Text(reading.siteName, fontSize = 16.sp, color = Color.Black)
-                                Text(reading.timestamp, fontSize = 12.sp, color = Color.DarkGray)
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(reading.siteName, fontSize = 16.sp, color = darkBlue)
+                                Text("Water Level: ${reading.waterLevel}", fontSize = 14.sp, color = Color.DarkGray)
+                                Text(reading.timestamp, fontSize = 12.sp, color = Color.Gray)
                             }
 
-                            Spacer(modifier = Modifier.weight(1f))
-
                             Text(
-                                text = if (reading.status == "Pending") "⏳" else "✔",
-                                fontSize = 18.sp
+                                text = when (reading.status) {
+                                    "Pending" -> "⏳"
+                                    "Synced" -> "✔"
+                                    else -> ""
+                                },
+                                fontSize = 18.sp,
+                                color = when (reading.status) {
+                                    "Pending" -> pendingColor
+                                    "Synced" -> syncedColor
+                                    else -> Color.Black
+                                }
                             )
 
                             Spacer(modifier = Modifier.width(8.dp))
 
-                            // Retry button only
                             if (reading.status == "Pending" && !isSyncing) {
-                                Button(onClick = {
-                                    readings = readings.map {
-                                        if (it == reading) it.copy(status = "Synced") else it
-                                    }
-                                    showConfetti = true
-                                }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))) {
+                                Button(
+                                    onClick = {
+                                        readings = readings.map {
+                                            if (it == reading) it.copy(status = "Synced") else it
+                                        }
+                                        showConfetti = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
+                                ) {
                                     Text("Retry", color = Color.White, fontSize = 12.sp)
                                 }
                             }
@@ -141,7 +161,7 @@ fun OfflineQueueScreenEnhanced() {
                     showConfetti = true
                 }
             },
-            containerColor = Color(0xFF1565C0),
+            containerColor = primaryBlue,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -151,12 +171,13 @@ fun OfflineQueueScreenEnhanced() {
 
         // Confetti placeholder
         if (showConfetti) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Transparent),
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                Text("🎉 SYNC COMPLETE! 🎉", fontSize = 24.sp, color = Color(0xFF2E7D32))
+                Text("🎉 SYNC COMPLETE! 🎉", fontSize = 24.sp, color = syncedColor)
             }
         }
     }
