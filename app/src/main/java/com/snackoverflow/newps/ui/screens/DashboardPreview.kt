@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,6 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+
+data class SiteReading(
+    val siteName: String,
+    val waterLevel: String,
+    val timestamp: String
 import androidx.core.view.WindowCompat
 
 data class Dam(
@@ -39,6 +48,11 @@ class SupervisorDashboardActivity : ComponentActivity() {
 }
 
 @Composable
+fun SupervisorDashboardScreenUI(navController: NavController? = null) {
+    val recentReadings = listOf(
+        SiteReading("River Station 1", "3.5m", "12:34 PM"),
+        SiteReading("River Station 2", "4.2m", "12:40 PM"),
+        SiteReading("River Station 3", "5.1m", "12:50 PM")
 fun SupervisorDashboardScreenUI() {
 
     val damList = listOf(
@@ -56,6 +70,38 @@ fun SupervisorDashboardScreenUI() {
             .fillMaxSize()
             .background(Color(0xFFE3F2FF))
             .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Dashboard",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1565C0),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Top metric cards
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            MetricCard(
+                title = "Total Sites Active",
+                value = "12",
+                valueColor = Color.Black,
+                modifier = Modifier.weight(1f)
+            )
+            MetricCard(
+                title = "Alerts Today",
+                value = "3",
+                valueColor = Color.Red,
+                modifier = Modifier.weight(1f)
+            )
+            MetricCard(
+                title = "Skipped Readings",
+                value = "2",
+                valueColor = Color.Black,
+                modifier = Modifier.weight(1f)
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
@@ -78,6 +124,21 @@ fun SupervisorDashboardScreenUI() {
                 MetricCard("Normal", "8", Color(0xFF388E3C), Modifier.weight(1f))
             }
 
+        // Graph placeholder
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .horizontalScroll(enabled = true, state = rememberScrollState())
+                    .fillMaxWidth()) {
+                //Text("Graph Placeholder: Water Level Trends", color = Color.Gray)
+                AlertsScreenUI()
             Spacer(modifier = Modifier.height(16.dp))
 
             // Mid Metrics Row

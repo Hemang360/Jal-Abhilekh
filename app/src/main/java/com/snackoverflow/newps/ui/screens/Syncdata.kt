@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,7 @@ data class OfflineReading(
 )
 
 @Composable
-fun OfflineQueueScreenEnhanced() {
+fun OfflineQueueScreenEnhanced(navController: NavController? = null) {
     val scope = rememberCoroutineScope()
     var readings by remember {
         mutableStateOf(

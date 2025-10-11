@@ -12,9 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 @Composable
-fun CaptureReadingScreen() {
+fun CaptureReadingScreen(navController: NavController? = null) {
 
     var detectedNumber by remember { mutableStateOf("--") }
     var confidence by remember { mutableStateOf(0f) }

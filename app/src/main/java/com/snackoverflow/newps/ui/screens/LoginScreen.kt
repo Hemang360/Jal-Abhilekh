@@ -16,10 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.snackoverflow.newps.ui.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage() {
+fun LoginPage(navController: NavController? = null) {
     val roles = listOf("Field Staff", "Supervisor", "Admin")
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -107,7 +109,7 @@ fun LoginPage() {
 
             // Sign In Button
             Button(
-                onClick = { /* TODO: Handle Sign In */ },
+                onClick = { navController?.navigate(Screen.DashboardScreen.route) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),

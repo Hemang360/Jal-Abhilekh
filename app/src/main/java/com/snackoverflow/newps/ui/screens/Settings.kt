@@ -11,9 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 @Composable
-fun SettingsProfileHelpScreen() {
+fun SettingsProfileHelpScreen(navController: NavController? = null) {
     var isDarkMode by remember { mutableStateOf(false) }
     var syncFrequency by remember { mutableStateOf("15 min") }
     var language by remember { mutableStateOf("English") }

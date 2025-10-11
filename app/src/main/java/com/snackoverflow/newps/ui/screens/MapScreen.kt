@@ -12,9 +12,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 @Composable
-fun QRValidationScreenUI() {
+fun QRValidationScreenUI(navController: NavController? = null) {
     var qrResult by remember { mutableStateOf("") }
     var isVerified by remember { mutableStateOf<Boolean?>(null) }
 

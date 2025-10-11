@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 data class DamRecord(
     val name: String,
@@ -25,6 +26,7 @@ data class DamRecord(
 )
 
 @Composable
+fun HistoryScreenUI(navController: NavController? = null) {
 fun DamHistoryScreenUI() {
     var selectedFilter by remember { mutableStateOf("All") }
 

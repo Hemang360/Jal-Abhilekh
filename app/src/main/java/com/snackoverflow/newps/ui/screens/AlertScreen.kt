@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 data class DamAlert(
     val name: String,
@@ -24,6 +25,36 @@ data class DamAlert(
 )
 
 @Composable
+fun AlertsScreenUI(navController: NavController? = null) {
+    val alertList = listOf(
+        AlertReading(
+            site = "River Station 1",
+            reading = "3.98 m",
+            timestamp = "07 Oct 2025, 11:42 AM",
+            alertType = "Outside Geofence",
+            color = Color(0xFFFFCDD2) // light red
+        ),
+        AlertReading(
+            site = "River Station 2",
+            reading = "6.12 m",
+            timestamp = "07 Oct 2025, 10:58 AM",
+            alertType = "Sudden Jump from Previous Reading",
+            color = Color(0xFFFFF9C4) // light yellow
+        ),
+        AlertReading(
+            site = "River Station 3",
+            reading = "2.85 m",
+            timestamp = "07 Oct 2025, 9:30 AM",
+            alertType = "Duplicate Timestamp Detected",
+            color = Color(0xFFFFE0B2) // light orange
+        ),
+        AlertReading(
+            site = "Reservoir Gate A",
+            reading = "4.25 m",
+            timestamp = "07 Oct 2025, 8:15 AM",
+            alertType = "Manual Correction Verified",
+            color = Color(0xFFC8E6C9) // green
+        )
 fun AlertsScreenUI() {
     val damAlerts = listOf(
         DamAlert("Tehri Dam", "Bhagirathi River", "98.2% capacity", "+0.1%", "Critical"),
@@ -38,6 +69,13 @@ fun AlertsScreenUI() {
             .background(Color(0xFFdbf4ff))
             .padding(16.dp)
     ) {
+//        Text(
+//            text = "Flagged Readings",
+//            fontSize = 26.sp,
+//            fontWeight = FontWeight.Bold,
+//            color = Color(0xFF1565C0),
+//            modifier = Modifier.padding(bottom = 16.dp)
+//        )
         Text(
             text = "Major Dam Alerts",
             fontSize = 26.sp,

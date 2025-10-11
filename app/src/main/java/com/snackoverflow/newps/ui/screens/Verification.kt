@@ -12,9 +12,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun ReadingDetailScreenUI() {
+fun ReadingDetailScreenUI(navController: NavController? = null) {
     var isApproved by remember { mutableStateOf(false) }
     var showWarning by remember { mutableStateOf(true) }
 
