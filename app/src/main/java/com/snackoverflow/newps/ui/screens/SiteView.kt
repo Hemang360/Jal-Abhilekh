@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 data class SiteReadingDetail(
     val timestamp: String,
@@ -23,7 +24,7 @@ data class SiteReadingDetail(
 )
 
 @Composable
-fun DetailedSiteViewScreen() {
+fun DetailedSiteViewScreen(navController: NavController? = null) {
     val readings = listOf(
         SiteReadingDetail("12:00 PM", "3.5m", "Officer A", "28.6139,77.209"),
         SiteReadingDetail("12:30 PM", "4.0m", "Officer B", "28.6140,77.210", anomaly = true),

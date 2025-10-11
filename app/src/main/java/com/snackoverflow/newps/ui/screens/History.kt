@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 data class ReadingRecord(
     val siteName: String,
@@ -24,7 +25,7 @@ data class ReadingRecord(
 )
 
 @Composable
-fun HistoryScreenUI() {
+fun HistoryScreenUI(navController: NavController? = null) {
     var selectedFilter by remember { mutableStateOf("All") }
 
     // Sample data

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 data class AlertReading(
     val site: String,
@@ -24,7 +25,7 @@ data class AlertReading(
 )
 
 @Composable
-fun AlertsScreenUI() {
+fun AlertsScreenUI(navController: NavController? = null) {
     val alertList = listOf(
         AlertReading(
             site = "River Station 1",
@@ -62,13 +63,13 @@ fun AlertsScreenUI() {
             .background(Color(0xFFE3F2FF))
             .padding(16.dp)
     ) {
-        Text(
-            text = "Flagged Readings",
-            fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1565C0),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+//        Text(
+//            text = "Flagged Readings",
+//            fontSize = 26.sp,
+//            fontWeight = FontWeight.Bold,
+//            color = Color(0xFF1565C0),
+//            modifier = Modifier.padding(bottom = 16.dp)
+//        )
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),

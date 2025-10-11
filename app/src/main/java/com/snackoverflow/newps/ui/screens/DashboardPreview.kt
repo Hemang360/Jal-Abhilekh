@@ -1,9 +1,11 @@
 package com.snackoverflow.newps.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 data class SiteReading(
     val siteName: String,
@@ -22,7 +25,7 @@ data class SiteReading(
 )
 
 @Composable
-fun SupervisorDashboardScreenUI() {
+fun SupervisorDashboardScreenUI(navController: NavController? = null) {
     val recentReadings = listOf(
         SiteReading("River Station 1", "3.5m", "12:34 PM"),
         SiteReading("River Station 2", "4.2m", "12:40 PM"),
@@ -33,10 +36,11 @@ fun SupervisorDashboardScreenUI() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFE3F2FF))
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Supervisor Dashboard",
+            text = "Dashboard",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1565C0),
@@ -79,8 +83,12 @@ fun SupervisorDashboardScreenUI() {
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Text("Graph Placeholder: Water Level Trends", color = Color.Gray)
+            Box(contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .horizontalScroll(enabled = true, state = rememberScrollState())
+                    .fillMaxWidth()) {
+                //Text("Graph Placeholder: Water Level Trends", color = Color.Gray)
+                AlertsScreenUI()
             }
         }
 

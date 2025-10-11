@@ -12,9 +12,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 @Composable
-fun ManualReadingEntryScreenUI() {
+fun ManualReadingEntryScreenUI(navController: NavController? = null) {
     var waterLevel by remember { mutableStateOf("") }
     var siteName by remember { mutableStateOf("") }
     val timestamp = "12:34 PM"

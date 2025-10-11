@@ -15,9 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun ReadingSummaryScreen() {
+fun ReadingSummaryScreen(navController: NavController? = null) {
     // Dummy placeholders — replace with actual data
     val readingValue = "3.72 m"
     val siteName = "River Station 1"
