@@ -92,7 +92,7 @@ fun LoginPage(navController: NavController? = null) {
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
                 ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     roles.forEach { role ->

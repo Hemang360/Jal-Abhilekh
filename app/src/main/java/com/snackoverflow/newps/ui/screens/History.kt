@@ -27,7 +27,6 @@ data class DamRecord(
 
 @Composable
 fun HistoryScreenUI(navController: NavController? = null) {
-fun DamHistoryScreenUI() {
     var selectedFilter by remember { mutableStateOf("All") }
 
     // Sample dam alert data
@@ -72,10 +71,10 @@ fun DamHistoryScreenUI() {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             // Filter chips
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SmallFilterChip(label = "All", selected = selectedFilter == "All") { selectedFilter = it }
-                SmallFilterChip(label = "Critical", selected = selectedFilter == "Critical") { selectedFilter = it }
-                SmallFilterChip(label = "Warning", selected = selectedFilter == "Warning") { selectedFilter = it }
-                SmallFilterChip(label = "Normal", selected = selectedFilter == "Normal") { selectedFilter = it }
+                SmallFilterChip(label = "All", selected = selectedFilter == "All") { selectedFilter = "All" }
+                SmallFilterChip(label = "Critical", selected = selectedFilter == "Critical") { selectedFilter = "Critical" }
+                SmallFilterChip(label = "Warning", selected = selectedFilter == "Warning") { selectedFilter = "Warning" }
+                SmallFilterChip(label = "Normal", selected = selectedFilter == "Normal") { selectedFilter = "Normal" }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -113,12 +112,12 @@ fun DamHistoryScreenUI() {
 }
 
 @Composable
-fun SmallFilterChip(label: String, selected: Boolean, onSelected: (String) -> Unit) {
+fun SmallFilterChip(label: String, selected: Boolean, onSelected: () -> Unit) {
     Surface(
         modifier = Modifier
             .wrapContentWidth()
             .height(36.dp)
-            .clickable { onSelected(label) },
+            .clickable { onSelected() },
         shape = RoundedCornerShape(18.dp),
         color = if (selected) Color(0xFF25a4ff) else Color.White,
         tonalElevation = if (selected) 4.dp else 0.dp
@@ -193,5 +192,5 @@ fun DamCardHistoryUI(dam: DamRecord) {
 @Preview(showBackground = true)
 @Composable
 fun DamHistoryPreviewUI() {
-    DamHistoryScreenUI()
+    HistoryScreenUI()
 }

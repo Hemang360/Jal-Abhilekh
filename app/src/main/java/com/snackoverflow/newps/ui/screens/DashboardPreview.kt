@@ -19,14 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.snackoverflow.newps.ui.Screen
 
 data class SiteReading(
     val siteName: String,
     val waterLevel: String,
     val timestamp: String
-import androidx.core.view.WindowCompat
+)
 
 data class Dam(
     val name: String,
@@ -36,25 +36,9 @@ data class Dam(
     val status: String
 )
 
-class SupervisorDashboardActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        setContent {
-            SupervisorDashboardScreenUI()
-        }
-    }
-}
 
 @Composable
 fun SupervisorDashboardScreenUI(navController: NavController? = null) {
-    val recentReadings = listOf(
-        SiteReading("River Station 1", "3.5m", "12:34 PM"),
-        SiteReading("River Station 2", "4.2m", "12:40 PM"),
-        SiteReading("River Station 3", "5.1m", "12:50 PM")
-fun SupervisorDashboardScreenUI() {
-
     val damList = listOf(
         Dam("Tehri Dam", "Bhagirathi River", "98.2% capacity", "+0.1%", "Critical"),
         Dam("Bhakra Dam", "Sutlej River", "95.6% capacity", "+0.1%", "Warning"),
@@ -70,38 +54,6 @@ fun SupervisorDashboardScreenUI() {
             .fillMaxSize()
             .background(Color(0xFFE3F2FF))
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Dashboard",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1565C0),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Top metric cards
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            MetricCard(
-                title = "Total Sites Active",
-                value = "12",
-                valueColor = Color.Black,
-                modifier = Modifier.weight(1f)
-            )
-            MetricCard(
-                title = "Alerts Today",
-                value = "3",
-                valueColor = Color.Red,
-                modifier = Modifier.weight(1f)
-            )
-            MetricCard(
-                title = "Skipped Readings",
-                value = "2",
-                valueColor = Color.Black,
-                modifier = Modifier.weight(1f)
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
@@ -123,25 +75,24 @@ fun SupervisorDashboardScreenUI() {
                 MetricCard("Warning", "4", Color(0xFFFFA000), Modifier.weight(1f))
                 MetricCard("Normal", "8", Color(0xFF388E3C), Modifier.weight(1f))
             }
+        }
 
         // Graph placeholder
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(12.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-        ) {
-            Box(contentAlignment = Alignment.Center,
+        item {
+            Card(
                 modifier = Modifier
-                    .horizontalScroll(enabled = true, state = rememberScrollState())
-                    .fillMaxWidth()) {
-                //Text("Graph Placeholder: Water Level Trends", color = Color.Gray)
-                AlertsScreenUI()
-            Spacer(modifier = Modifier.height(16.dp))
+                    .fillMaxWidth()
+                    .height(200.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(12.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                AlertsScreenUI(navController, Modifier.fillMaxWidth())
+            }
+        }
 
-            // Mid Metrics Row
+        // Mid Metrics Row
+        item {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -150,10 +101,10 @@ fun SupervisorDashboardScreenUI() {
                 MetricCard("Inflow", "+12.5%", Color(0xFF388E3C), Modifier.weight(1f))
                 MetricCard("Outflow", "-8.3%", Color.Red, Modifier.weight(1f))
             }
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Environmental Metrics
+        // Environmental Metrics
+        item {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -162,9 +113,9 @@ fun SupervisorDashboardScreenUI() {
                 MetricCard("Network Capacity", "97%", Color(0xFF2E7D32), Modifier.weight(1f))
                 MetricCard("Total Capacity", "86%", Color(0xFF1565C0), Modifier.weight(1f))
             }
+        }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
+        item {
             Text(
                 text = "All Dams - Live Overview",
                 fontSize = 20.sp,
@@ -177,6 +128,44 @@ fun SupervisorDashboardScreenUI() {
         // Dam Cards
         items(damList) { dam ->
             DamCard(dam)
+        }
+
+        // Navigation Buttons
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = { navController?.navigate(Screen.MapScreen.route) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
+                ) {
+                    Text(
+                        text = "Map Screen",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                
+                Button(
+                    onClick = { navController?.navigate(Screen.CaptureReading.route) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                ) {
+                    Text(
+                        text = "Capture Reading",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

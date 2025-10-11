@@ -74,7 +74,7 @@ fun OfflineQueueScreenEnhanced(navController: NavController? = null) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 LinearProgressIndicator(
-                    progress = 0.5f,
+                    progress = { 0.5f },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp),

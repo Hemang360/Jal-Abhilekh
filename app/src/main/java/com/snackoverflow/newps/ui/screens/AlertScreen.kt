@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +27,7 @@ data class DamAlert(
 )
 
 @Composable
-fun AlertsScreenUI(navController: NavController? = null) {
+fun AlertsScreenUI(navController: NavController? = null, modifier: Modifier = Modifier) {
     // The list of dam alerts to be displayed.
     val damAlerts = listOf(
         DamAlert("Tehri Dam", "Bhagirathi River", "98.2% capacity", "+0.1%", "Critical"),
@@ -35,10 +37,11 @@ fun AlertsScreenUI(navController: NavController? = null) {
     )
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
+            .fillMaxWidth()
             .background(Color(0xFFdbf4ff))
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Text(
             text = "Major Dam Alerts",
@@ -48,13 +51,9 @@ fun AlertsScreenUI(navController: NavController? = null) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(damAlerts) { alert ->
-                DamAlertCard(alert)
-            }
+        damAlerts.forEach { alert ->
+            DamAlertCard(alert)
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

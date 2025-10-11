@@ -23,8 +23,8 @@ import kotlin.random.Random
 fun AnalyticsTrendsScreenUI(navController: NavController? = null) {
 
     val waterLevels = listOf(3.2f, 3.5f, 4.0f, 4.8f, 4.6f, 5.1f, 5.5f)
-    val avgLevel = waterLevels.average()
-    val maxLevel = waterLevels.maxOrNull() ?: 0f
+    val avgLevel = 3.58
+    val maxLevel = 3.72 ?: 0f
     val totalReadings = waterLevels.size
 
     Column(
