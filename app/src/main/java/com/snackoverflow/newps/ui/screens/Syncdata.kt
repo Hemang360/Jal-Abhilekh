@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.snackoverflow.newps.ui.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -161,6 +162,7 @@ fun OfflineQueueScreenEnhanced(navController: NavController? = null) {
                     isSyncing = false
                     showConfetti = true
                 }
+                navController?.navigate(Screen.DashboardScreen.route)
             },
             containerColor = primaryBlue,
             modifier = Modifier

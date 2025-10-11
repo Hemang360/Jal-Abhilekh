@@ -38,8 +38,17 @@ android {
 
 dependencies {
 
+    val lifecycleVersion = "2.6.2" // Use a recent stable version
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    val cameraxVersion = "1.3.1" // Use the latest stable version
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.navigation:navigation-compose:2.9.5")
+    val accompanistVersion = "0.32.0" // Use the latest stable version
+    implementation("com.google.accompanist:accompanist-permissions:${accompanistVersion}")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
