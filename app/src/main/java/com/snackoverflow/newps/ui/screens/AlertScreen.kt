@@ -26,41 +26,12 @@ data class DamAlert(
 
 @Composable
 fun AlertsScreenUI(navController: NavController? = null) {
-    val alertList = listOf(
-        AlertReading(
-            site = "River Station 1",
-            reading = "3.98 m",
-            timestamp = "07 Oct 2025, 11:42 AM",
-            alertType = "Outside Geofence",
-            color = Color(0xFFFFCDD2) // light red
-        ),
-        AlertReading(
-            site = "River Station 2",
-            reading = "6.12 m",
-            timestamp = "07 Oct 2025, 10:58 AM",
-            alertType = "Sudden Jump from Previous Reading",
-            color = Color(0xFFFFF9C4) // light yellow
-        ),
-        AlertReading(
-            site = "River Station 3",
-            reading = "2.85 m",
-            timestamp = "07 Oct 2025, 9:30 AM",
-            alertType = "Duplicate Timestamp Detected",
-            color = Color(0xFFFFE0B2) // light orange
-        ),
-        AlertReading(
-            site = "Reservoir Gate A",
-            reading = "4.25 m",
-            timestamp = "07 Oct 2025, 8:15 AM",
-            alertType = "Manual Correction Verified",
-            color = Color(0xFFC8E6C9) // green
-        )
-fun AlertsScreenUI() {
+    // The list of dam alerts to be displayed.
     val damAlerts = listOf(
         DamAlert("Tehri Dam", "Bhagirathi River", "98.2% capacity", "+0.1%", "Critical"),
         DamAlert("Hirakud Dam", "Mahanadi River", "98.2% capacity", "+0.2%", "Critical"),
-        DamAlert("Tehri Dam", "Bhagirathi River", "98.2% capacity", "+0.1%", "Critical"),
-        DamAlert("Hirakud Dam", "Mahanadi River", "98.2% capacity", "+0.2%", "Critical")
+        DamAlert("Bhakra Dam", "Sutlej River", "92.5% capacity", "+0.15%", "Warning"),
+        DamAlert("Nagarjuna Sagar", "Krishna River", "88.0% capacity", "+0.05%", "Normal")
     )
 
     Column(
@@ -69,13 +40,6 @@ fun AlertsScreenUI() {
             .background(Color(0xFFdbf4ff))
             .padding(16.dp)
     ) {
-//        Text(
-//            text = "Flagged Readings",
-//            fontSize = 26.sp,
-//            fontWeight = FontWeight.Bold,
-//            color = Color(0xFF1565C0),
-//            modifier = Modifier.padding(bottom = 16.dp)
-//        )
         Text(
             text = "Major Dam Alerts",
             fontSize = 26.sp,
@@ -97,10 +61,12 @@ fun AlertsScreenUI() {
 
 @Composable
 fun DamAlertCard(alert: DamAlert) {
+    // Determine the color based on the alert's status.
     val statusColor = when (alert.status) {
         "Critical" -> Color(0xFFD32F2F)
         "Warning" -> Color(0xFFFFA000)
-        else -> Color(0xFF388E3C)
+        "Normal" -> Color(0xFF388E3C)
+        else -> Color.Gray
     }
 
     Card(
@@ -111,24 +77,19 @@ fun DamAlertCard(alert: DamAlert) {
     ) {
         Column(
             modifier = Modifier
-                .background(Color(0xFFd8efff))
                 .padding(16.dp)
         ) {
             Text(alert.name, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF0070c0))
             Text(alert.river, fontSize = 14.sp, color = Color(0xFF25a4ff))
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                Column {
-                    Text("Current Level:", fontSize = 14.sp, color = Color.Gray)
-                    Text(alert.currentLevel, fontWeight = FontWeight.Medium, fontSize = 14.sp)
-                }
-
-                Column {
-                    Text("24H Change:", fontSize = 14.sp, color = Color.Gray)
-                    Text(alert.change24h, fontWeight = FontWeight.Medium, fontSize = 14.sp)
-                }
-
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                InfoColumn(title = "Current Level:", value = alert.currentLevel)
+                InfoColumn(title = "24H Change:", value = alert.change24h)
                 Column(horizontalAlignment = Alignment.End) {
                     Text("Status:", fontSize = 14.sp, color = Color.Gray)
                     Text(alert.status, fontWeight = FontWeight.SemiBold, color = statusColor, fontSize = 14.sp)
@@ -152,6 +113,16 @@ fun DamAlertCard(alert: DamAlert) {
         }
     }
 }
+
+// A helper composable to reduce code repetition in the card.
+@Composable
+private fun InfoColumn(title: String, value: String) {
+    Column {
+        Text(title, fontSize = 14.sp, color = Color.Gray)
+        Text(value, fontWeight = FontWeight.Medium, fontSize = 14.sp)
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
