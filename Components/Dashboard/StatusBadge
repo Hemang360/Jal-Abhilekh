@@ -1,0 +1,31 @@
+import React from 'react';
+import { CheckCircle, AlertTriangle, AlertOctagon } from 'lucide-react';
+
+export default function StatusBadge({ status }) {
+  const config = {
+    Safe: {
+      icon: CheckCircle,
+      className: 'bg-green-100 text-green-700 border-green-200',
+      glowClass: 'shadow-green-500/20'
+    },
+    Caution: {
+      icon: AlertTriangle,
+      className: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+      glowClass: 'shadow-yellow-500/20'
+    },
+    Critical: {
+      icon: AlertOctagon,
+      className: 'bg-red-100 text-red-700 border-red-200',
+      glowClass: 'shadow-red-500/20'
+    }
+  };
+
+  const { icon: Icon, className, glowClass } = config[status] || config.Safe;
+
+  return (
+    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${className} ${glowClass} shadow-lg font-semibold text-sm`}>
+      <Icon className="w-4 h-4" />
+      <span>{status}</span>
+    </div>
+  );
+}

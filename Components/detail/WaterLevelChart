@@ -1,0 +1,57 @@
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { format, parseISO } from 'date-fns';
+
+export default function WaterLevelChart({ data, metric = 'percentage' }) {
+  const chartData = data.map(item => ({
+    date: item.date,
+    value: metric === 'percentage' ? item.percentage : item.level_meters,
+    displayDate: format(parseISO(item.date), 'MMM d')
+  }));
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white px-4 py-3 rounded-lg shadow-lg border border-gray-200">
+          <p className="text-sm text-gray-600 mb-1">{format(parseISO(payload[0].payload.date), 'MMM d, yyyy')}</p>
+          <p className="text-lg font-bold text-[#0070c0]">
+            {payload[0].value.toFixed(1)}{metric === 'percentage' ? '%' : 'm'}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <AreaChart data={chartData}>
+        <defs>
+          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#25a4ff" stopOpacity={0.3}/>
+            <stop offset="95%" stopColor="#25a4ff" stopOpacity={0}/>
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+        <XAxis 
+          dataKey="displayDate" 
+          stroke="#6b7280"
+          style={{ fontSize: '12px' }}
+        />
+        <YAxis 
+          stroke="#6b7280"
+          style={{ fontSize: '12px' }}
+          domain={metric === 'percentage' ? [0, 100] : ['auto', 'auto']}
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <Area 
+          type="monotone" 
+          dataKey="value" 
+          stroke="#0070c0" 
+          strokeWidth={3}
+          fill="url(#colorValue)" 
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+}

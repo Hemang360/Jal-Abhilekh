@@ -1,0 +1,111 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Droplets, Calendar, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import StatusBadge from './StatusBadge';
+
+export default function DamCard({ dam, index }) {
+  const getTrendIcon = () => {
+    if (!dam.historical_data || dam.historical_data.length < 2) return Minus;
+    const recent = dam.historical_data[dam.historical_data.length - 1].percentage;
+    const previous = dam.historical_data[dam.historical_data.length - 2].percentage;
+    if (recent > previous) return TrendingUp;
+    if (recent < previous) return TrendingDown;
+    return Minus;
+  };
+
+  const TrendIcon = getTrendIcon();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      whileHover={{ y: -5 }}
+      className="group"
+    >
+      <Link to={createPageUrl("DamDetail") + `?id=${dam.id}`}>
+        <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+          {dam.image_url && (
+            <div className="relative h-48 overflow-hidden">
+              <img 
+                src={dam.image_url} 
+                alt={dam.name}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute top-4 right-4">
+                <StatusBadge status={dam.status} />
+              </div>
+            </div>
+          )}
+          
+          <div className="p-6">
+            <div className={!dam.image_url ? 'flex justify-between items-start mb-4' : 'mb-4'}>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-[#0070c0] transition-colors">
+                  {dam.name}
+                </h3>
+                <div className="flex items-center gap-2 text-gray-600 text-sm">
+                  <Droplets className="w-4 h-4 text-[#25a4ff]" />
+                  <span>{dam.river_name}</span>
+                </div>
+              </div>
+              {!dam.image_url && (
+                <StatusBadge status={dam.status} />
+              )}
+            </div>
+
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Water Level</span>
+                <span className="font-semibold text-gray-900">{dam.current_level_meters}m</span>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Capacity</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-[#0070c0]">{dam.percentage_full}%</span>
+                    <TrendIcon className={`w-4 h-4 ${
+                      TrendIcon === TrendingUp ? 'text-blue-500' : 
+                      TrendIcon === TrendingDown ? 'text-orange-500' : 
+                      'text-gray-400'
+                    }`} />
+                  </div>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${dam.percentage_full}%` }}
+                    transition={{ duration: 1, delay: index * 0.05 }}
+                    className={`h-full rounded-full ${
+                      dam.status === 'Critical' ? 'bg-gradient-to-r from-red-500 to-rose-600' :
+                      dam.status === 'Caution' ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                      'bg-gradient-to-r from-green-500 to-emerald-500'
+                    }`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-gray-100 space-y-2">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <MapPin className="w-4 h-4" />
+                <span>{dam.location}, {dam.state}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <Calendar className="w-4 h-4" />
+                <span>Updated {format(new Date(dam.last_updated), 'MMM d, h:mm a')}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#25a4ff] rounded-2xl transition-colors duration-300 pointer-events-none" />
+        </div>
+      </Link>
+    </motion.div>
+  );
+}

@@ -1,0 +1,126 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { TrendingUp, TrendingDown, Minus, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+
+export default function DamsTable({ dams }) {
+  const getTrendIcon = (dam) => {
+    if (!dam.historical_data || dam.historical_data.length < 2) return Minus;
+    const recent = dam.historical_data[dam.historical_data.length - 1].percentage;
+    const previous = dam.historical_data[dam.historical_data.length - 2].percentage;
+    if (recent > previous) return TrendingUp;
+    if (recent < previous) return TrendingDown;
+    return Minus;
+  };
+
+  const getTrendValue = (dam) => {
+    if (!dam.historical_data || dam.historical_data.length < 2) return '0%';
+    const recent = dam.historical_data[dam.historical_data.length - 1].percentage;
+    const previous = dam.historical_data[dam.historical_data.length - 2].percentage;
+    const change = recent - previous;
+    return `${change > 0 ? '+' : ''}${change.toFixed(1)}%`;
+  };
+
+  const getStatusConfig = (status) => {
+    switch (status) {
+      case 'Critical':
+        return { className: 'bg-red-100 text-red-700', label: 'Critical' };
+      case 'Caution':
+        return { className: 'bg-yellow-100 text-yellow-700', label: 'Warning' };
+      default:
+        return { className: 'bg-green-100 text-green-700', label: 'Normal' };
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-200">
+        <h3 className="text-lg font-bold text-gray-900">All Dams</h3>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Dam</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Current Level</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">24h Change</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+              <th className="text-right px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dams.map((dam, index) => {
+              const TrendIcon = getTrendIcon(dam);
+              const trendValue = getTrendValue(dam);
+              const statusConfig = getStatusConfig(dam.status);
+              const isPositive = trendValue.startsWith('+');
+              const isNegative = trendValue.startsWith('-');
+
+              return (
+                <motion.tr
+                  key={dam.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <span className="text-blue-600 font-semibold text-sm">
+                          {dam.name.substring(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{dam.name}</p>
+                        <p className="text-sm text-gray-500">{dam.river_name}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="font-semibold text-gray-900">{dam.percentage_full}%</p>
+                      <p className="text-sm text-gray-500">capacity</p>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <TrendIcon className={`w-4 h-4 ${
+                        isPositive ? 'text-blue-500' : 
+                        isNegative ? 'text-orange-500' : 
+                        'text-gray-400'
+                      }`} />
+                      <span className={`font-semibold ${
+                        isPositive ? 'text-blue-600' : 
+                        isNegative ? 'text-orange-600' : 
+                        'text-gray-500'
+                      }`}>
+                        {trendValue}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.className}`}>
+                      {statusConfig.label}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <Link 
+                      to={createPageUrl("DamDetail") + `?id=${dam.id}`}
+                      className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
+                    >
+                      View
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </td>
+                </motion.tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,35 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function TopStats({ dams }) {
+  const stats = React.useMemo(() => {
+    const avgLevel = dams.reduce((acc, d) => acc + (d.percentage_full || 0), 0) / (dams.length || 1);
+    const totalAlerts = dams.reduce((acc, d) => acc + (d.alerts?.length || 0), 0);
+
+    return [
+      { label: 'Avg Level', value: `${avgLevel.toFixed(1)}%` },
+      { label: 'Inflows', value: '+12.5%' },
+      { label: 'Outflows', value: '-8.3%' },
+      { label: 'Alerts', value: totalAlerts },
+      { label: 'Rainfall', value: '45mm' },
+      { label: 'Capacity', value: '86%' },
+    ];
+  }, [dams]);
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      {stats.map((stat, index) => (
+        <motion.div
+          key={stat.label}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className="bg-white rounded-lg p-4 border border-gray-200"
+        >
+          <p className="text-gray-500 text-xs mb-1">{stat.label}</p>
+          <p className="text-gray-900 text-xl font-bold">{stat.value}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}

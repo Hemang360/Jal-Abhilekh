@@ -1,0 +1,45 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function NetworkCapacity({ dams }) {
+  const avgCapacity = dams.reduce((acc, d) => acc + (d.percentage_full || 0), 0) / (dams.length || 1);
+  const capacity = avgCapacity.toFixed(0);
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <h3 className="text-lg font-bold text-gray-900 mb-6">Network Capacity</h3>
+      
+      <div className="relative w-48 h-48 mx-auto">
+        <svg className="w-full h-full transform -rotate-90">
+          <circle
+            cx="96"
+            cy="96"
+            r="80"
+            fill="none"
+            stroke="#E5E7EB"
+            strokeWidth="16"
+          />
+          <motion.circle
+            cx="96"
+            cy="96"
+            r="80"
+            fill="none"
+            stroke="#0066CC"
+            strokeWidth="16"
+            strokeLinecap="round"
+            strokeDasharray={`${2 * Math.PI * 80}`}
+            initial={{ strokeDashoffset: 2 * Math.PI * 80 }}
+            animate={{ strokeDashoffset: 2 * Math.PI * 80 * (1 - capacity / 100) }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-5xl font-bold text-gray-900">{capacity}%</p>
+            <p className="text-sm text-gray-500 mt-1">Avg across dams</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

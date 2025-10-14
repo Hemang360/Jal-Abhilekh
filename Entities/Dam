@@ -1,0 +1,122 @@
+{
+  "name": "Dam",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the dam"
+    },
+    "river_name": {
+      "type": "string",
+      "description": "Name of the river"
+    },
+    "location": {
+      "type": "string",
+      "description": "City or area location"
+    },
+    "state": {
+      "type": "string",
+      "description": "State or region"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Gravity",
+        "Arch",
+        "Embankment",
+        "Buttress",
+        "Multipurpose",
+        "Hydroelectric"
+      ],
+      "description": "Type of dam"
+    },
+    "current_level_meters": {
+      "type": "number",
+      "description": "Current water level in meters"
+    },
+    "capacity_meters": {
+      "type": "number",
+      "description": "Maximum capacity in meters"
+    },
+    "percentage_full": {
+      "type": "number",
+      "description": "Percentage of capacity filled"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Safe",
+        "Caution",
+        "Critical"
+      ],
+      "description": "Current status"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "GPS latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "GPS longitude"
+    },
+    "description": {
+      "type": "string",
+      "description": "Dam description"
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "critical"
+            ]
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Active alerts and warnings"
+    },
+    "historical_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "level_meters": {
+            "type": "number"
+          },
+          "percentage": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "Historical water level data"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Dam image URL"
+    }
+  },
+  "required": [
+    "name",
+    "river_name",
+    "state"
+  ]
+}

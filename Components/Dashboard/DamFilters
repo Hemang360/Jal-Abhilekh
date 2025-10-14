@@ -1,0 +1,79 @@
+import React from 'react';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Search, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+export default function DamFilters({ 
+  searchTerm, 
+  setSearchTerm, 
+  statusFilter, 
+  setStatusFilter, 
+  stateFilter, 
+  setStateFilter,
+  typeFilter,
+  setTypeFilter,
+  states,
+  types 
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-2xl p-6 shadow-lg mb-8"
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Filter className="w-5 h-5 text-[#0070c0]" />
+        <h3 className="text-lg font-semibold text-gray-900">Search & Filter</h3>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            placeholder="Search dams..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 border-gray-200 focus:border-[#25a4ff] focus:ring-[#25a4ff]"
+          />
+        </div>
+
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="border-gray-200 focus:border-[#25a4ff] focus:ring-[#25a4ff]">
+            <SelectValue placeholder="All Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="Safe">Safe</SelectItem>
+            <SelectItem value="Caution">Caution</SelectItem>
+            <SelectItem value="Critical">Critical</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={stateFilter} onValueChange={setStateFilter}>
+          <SelectTrigger className="border-gray-200 focus:border-[#25a4ff] focus:ring-[#25a4ff]">
+            <SelectValue placeholder="All States" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All States</SelectItem>
+            {states.map(state => (
+              <SelectItem key={state} value={state}>{state}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="border-gray-200 focus:border-[#25a4ff] focus:ring-[#25a4ff]">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            {types.map(type => (
+              <SelectItem key={type} value={type}>{type}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </motion.div>
+  );
+}

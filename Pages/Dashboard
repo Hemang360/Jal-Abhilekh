@@ -1,0 +1,150 @@
+
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Plus, Bell } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import TopStats from '../components/dashboard/TopStats';
+import StatusFilters from '../components/dashboard/StatusFilters';
+import DamsTable from '../components/dashboard/DamsTable';
+import NetworkCapacity from '../components/dashboard/NetworkCapacity';
+import { Skeleton } from '@/components/ui/skeleton';
+
+export default function Dashboard({ dams: initialDams, loading: initialLoading }) {
+  const [dams, setDams] = useState(initialDams || []);
+  const [loading, setLoading] = useState(initialLoading);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [regionFilter, setRegionFilter] = useState('all');
+
+  useEffect(() => {
+    setDams(initialDams || []);
+    setLoading(initialLoading);
+  }, [initialDams, initialLoading]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam) {
+      setStatusFilter(filterParam);
+    } else {
+      // Reset status filter if param is removed
+      setStatusFilter('all');
+    }
+  }, [window.location.search]);
+
+  const filteredDams = (dams || []).filter(dam => {
+    const matchesSearch = dam.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         dam.river_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || dam.status === statusFilter;
+    const matchesRegion = regionFilter === 'all' || dam.state === regionFilter;
+    
+    return matchesSearch && matchesStatus && matchesRegion;
+  });
+
+  const criticalCount = (dams || []).filter(d => d.status === 'Critical').length;
+  const regions = [...new Set((dams || []).map(d => d.state))].sort();
+
+  return (
+    <div className="h-full overflow-auto">
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900">Dam Dashboard</h1>
+          
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                placeholder="Search dams, regions, alerts..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-80 border-gray-300"
+              />
+            </div>
+
+            <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <Bell className="w-5 h-5 text-gray-600" />
+              {criticalCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  {criticalCount}
+                </span>
+              )}
+            </button>
+
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Dam
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="p-6">
+        {loading ? (
+          <div className="space-y-6">
+            <div className="grid grid-cols-6 gap-4">
+              {[...Array(6)].map((_, i) => (
+                <Skeleton key={i} className="h-20 rounded-lg" />
+              ))}
+            </div>
+            <Skeleton className="h-40 rounded-xl" />
+            <Skeleton className="h-96 rounded-xl" />
+          </div>
+        ) : (
+          <>
+            <TopStats dams={dams} />
+            
+            <StatusFilters 
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+              regionFilter={regionFilter}
+              setRegionFilter={setRegionFilter}
+              regions={regions}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <div className="lg:col-span-3">
+                <DamsTable dams={filteredDams} />
+              </div>
+
+              <div className="space-y-6">
+                <NetworkCapacity dams={dams} />
+
+                <div className="bg-white rounded-xl border border-gray-200 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-gray-900">Inflow vs Outflow</h3>
+                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                      Details →
+                    </button>
+                  </div>
+                  <div className="h-32 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg flex items-end justify-around p-4">
+                    {[70, 85, 60, 90, 75, 80].map((height, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ height: 0 }}
+                        animate={{ height: `${height}%` }}
+                        transition={{ delay: i * 0.1 }}
+                        className="w-8 bg-blue-500 rounded-t"
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-4 mt-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                      Inflow
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                      Warning
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
+                      Critical
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

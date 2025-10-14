@@ -1,0 +1,63 @@
+import React from 'react';
+import { AlertTriangle, AlertOctagon, Info } from 'lucide-react';
+import { format } from 'date-fns';
+
+export default function AlertsList({ alerts }) {
+  if (!alerts || alerts.length === 0) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        <Info className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+        <p>No active alerts</p>
+      </div>
+    );
+  }
+
+  const getAlertConfig = (severity) => {
+    switch (severity) {
+      case 'critical':
+        return {
+          icon: AlertOctagon,
+          className: 'bg-red-50 border-red-200 text-red-700',
+          iconColor: 'text-red-500'
+        };
+      case 'warning':
+        return {
+          icon: AlertTriangle,
+          className: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+          iconColor: 'text-yellow-500'
+        };
+      default:
+        return {
+          icon: Info,
+          className: 'bg-blue-50 border-blue-200 text-blue-700',
+          iconColor: 'text-blue-500'
+        };
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      {alerts.map((alert, index) => {
+        const config = getAlertConfig(alert.severity);
+        const Icon = config.icon;
+        
+        return (
+          <div 
+            key={index}
+            className={`flex items-start gap-3 p-4 rounded-xl border ${config.className}`}
+          >
+            <Icon className={`w-5 h-5 mt-0.5 ${config.iconColor}`} />
+            <div className="flex-1">
+              <p className="font-medium">{alert.message}</p>
+              {alert.timestamp && (
+                <p className="text-sm opacity-75 mt-1">
+                  {format(new Date(alert.timestamp), 'MMM d, yyyy h:mm a')}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
