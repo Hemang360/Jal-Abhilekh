@@ -71,3 +71,7 @@ AI-based water level reading directly from gauge images
 Flood prediction model using historical water level data
 Push notifications for abnormal water levels
 Integration with IoT sensors for automated water monitoring
+
+
+<img width="179" height="395" alt="Screenshot 2025-10-14 213249" src="https://github.com/user-attachments/assets/57bfc350-080d-4ee3-be78-f038331105d2" />
+<img width="586" height="285" alt="Screenshot 2025-10-14 213302" src="https://github.com/user-attachments/assets/d9ba58d9-50e8-49c8-b6b5-e36dc59f279b" />
