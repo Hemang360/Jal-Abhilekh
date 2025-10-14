@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#25a4ff] hover:bg-[#1e8ce6] text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-[#9ce1ff] hover:bg-[#7dd1ff] text-[#0070c0] font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-[#d8efff] rounded-xl shadow-lg border border-[#9ce1ff]/20;
+  }
+  
+  .status-safe {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+  
+  .status-caution {
+    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  }
+  
+  .status-critical {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+}
