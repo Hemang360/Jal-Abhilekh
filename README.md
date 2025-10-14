@@ -58,6 +58,9 @@ Map View – Locations of all monitoring sites, geofencing alerts
 Reports / Analytics – Historical data, charts, flood prediction insights
 Settings – User profile, app settings, data sync controls
 
+
+<img width="179" height="395" alt="Screenshot 2025-10-14 213249" src="https://github.com/user-attachments/assets/57bfc350-080d-4ee3-be78-f038331105d2" />
+
 How It Works:
 Field staff logs in and selects their role.
 They navigate to a monitoring site. The app validates location using geofencing.
@@ -73,5 +76,4 @@ Push notifications for abnormal water levels
 Integration with IoT sensors for automated water monitoring
 
 
-<img width="179" height="395" alt="Screenshot 2025-10-14 213249" src="https://github.com/user-attachments/assets/57bfc350-080d-4ee3-be78-f038331105d2" />
 <img width="586" height="285" alt="Screenshot 2025-10-14 213302" src="https://github.com/user-attachments/assets/d9ba58d9-50e8-49c8-b6b5-e36dc59f279b" />
