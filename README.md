@@ -77,3 +77,6 @@ Integration with IoT sensors for automated water monitoring
 
 
 <img width="586" height="285" alt="Screenshot 2025-10-14 213302" src="https://github.com/user-attachments/assets/d9ba58d9-50e8-49c8-b6b5-e36dc59f279b" />
+
+deployed link to website : jal-abhilekh-i3tx.vercel.app/
+
