@@ -15,39 +15,63 @@ Manual reporting is prone to errors, delays, and data tampering.
 Challenges
 
 Unauthorized or skipped readings
+
 Lack of real-time access to water levels
+
 Manual data entry errors
+
 Inconsistent traceability and auditability
 
 Solution
 
 Jal Abhilekh provides a GPS-aware, mobile-first solution that:
+
 Validates user location with geofencing
+
 Requires real-time photo capture of gauge posts
+
 Automatically records timestamp, GPS coordinates, and site ID
+
 Allows manual entry or automatic reading from images
+
 Supports role-based access for field staff, supervisors, and administrators
+
 Integrates with a cloud dashboard for central monitoring
+
 Works offline with local storage, syncing automatically when the internet is available
 
 Features
 Login & Role Management
-Roles: Field Staff, Supervisor, Admin
-Offline mode for remote areas
-Biometric login support
-Data Capture
-Live photo capture of gauge posts
-Manual entry or scanning of water level readings
-QR code verification at sites for authenticity
-Location & Security
-GPS-based geofencing
-Alerts if outside the allowed zone
-Tamper detection for skipped or unauthorized readings
-Data Management & Dashboard
-Real-time sync with central server
-Role-based dashboards for supervisors and analysts
-Historical data analysis and reporting
 
+Roles: Field Staff, Supervisor, Admin
+
+Offline mode for remote areas
+
+Biometric login support
+
+Data Capture
+
+Live photo capture of gauge posts
+
+Manual entry or scanning of water level readings
+
+QR code verification at sites for authenticity
+
+Location & Security
+
+GPS-based geofencing
+
+Alerts if outside the allowed zone
+
+Tamper detection for skipped or unauthorized readings
+
+Data Management & Dashboard
+
+Real-time sync with central server
+
+Role-based dashboards for supervisors and analysts
+
+Historical data analysis and reporting
 Technology Stack
 Component	Technology
 Mobile App	Android (Jetpack Compose, Kotlin)
