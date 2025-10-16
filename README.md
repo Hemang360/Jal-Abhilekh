@@ -66,7 +66,7 @@ Map View – Locations of all monitoring sites, geofencing alerts<br>
 Reports / Analytics – Historical data, charts, flood prediction insights<br>
 Settings – User profile, app settings, data sync controls<br><br><br>
 <img width="179" height="395" alt="Screenshot 2025-10-14 213249" src="https://github.com/user-attachments/assets/57bfc350-080d-4ee3-be78-f038331105d2" />
-********<br>
+<br>
 # How It Works:<br>
 Field staff logs in and selects their role.<br>
 They navigate to a monitoring site. The app validates location using geofencing.<br>
