@@ -1,18 +1,14 @@
-Jal Abhilekh
+# Jal Abhilekh
 ⚡ Overview
 
 Jal Abhilekh is a mobile application designed to modernize river and reservoir water level monitoring.
-The app leverages GPS, geofencing, image capture, and cloud integration to replace manual data entry with a secure, scalable, and technologically advanced solution.
+The app leverages GPS, geofencing, image capture, and cloud integration to replace manual data entry with a secure, scalable, and technologically advanced solution.<br>
+This ensures accurate, real-time monitoring for:<br>
+Flood forecasting<br>
+Disaster preparedness<br>
+Water resource management<br>
 
-This ensures accurate, real-time monitoring for:
-
-Flood forecasting
-
-Disaster preparedness
-
-Water resource management
-
-⚠️ Problem Statement
+# ⚠️ Problem Statement
 
 In India, water level monitoring is critical for flood forecasting and water resource management.
 However, many readings are still taken manually at Central Water Commission (CWC) monitoring sites.
